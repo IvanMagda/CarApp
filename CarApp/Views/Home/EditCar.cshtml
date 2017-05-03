@@ -1,0 +1,65 @@
+﻿@using CarApp.Models
+@using Model
+@using System.Collections.Generic;
+@using System.Linq;
+@model CarEditViewModel
+
+@{
+    ViewBag.Title = "Create/Edit";
+}
+
+@using (Html.BeginForm("EditCar", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <h2>Car</h2>
+
+    @Html.HiddenFor(car => Model.Car.Id)
+
+    @Html.LabelFor(car => Model.Car.Model)
+    @Html.ValidationMessageFor(car => Model.Car.Model)
+    @Html.EditorFor(car => Model.Car.Model, new { htmlAttributes = new { @class = "form-control" } })
+
+    @Html.LabelFor(car => Model.Car.Brand)
+    @Html.ValidationMessageFor(car => Model.Car.Brand)
+    @Html.EditorFor(car => Model.Car.Brand, new { htmlAttributes = new { @class = "form-control" } })
+
+    @Html.LabelFor(car => Model.Car.Price)
+    @Html.ValidationMessageFor(car => Model.Car.Price)
+    @Html.EditorFor(car => Model.Car.Price, new { htmlAttributes = new { @class = "form-control" } })
+
+    @Html.LabelFor(car => Model.Car.ProductionYear)
+    @Html.ValidationMessageFor(car => Model.Car.ProductionYear)
+    @Html.EditorFor(car => Model.Car.ProductionYear, new { htmlAttributes = new { @class = "form-control" } })
+
+    @Html.LabelFor(car => Model.Car.CarType)
+    <p>
+        @Html.RadioButtonFor(car => Model.Car.CarType, CarType.Passenger, new { htmlAttributes = new { @class = "form-control" } })
+        Passenger
+    </p>
+    <p>
+        @Html.RadioButtonFor(car => Model.Car.CarType, CarType.Cargo, new { htmlAttributes = new { @class = "form-control" } })
+        Cargo
+    </p>
+    <select multiple class="chosen-select" name="ownersSelect" data-placeholder="Owners...">
+        @foreach (var owner in Model.Owners)
+        {
+            var selected = Model.Car.Owners.ToList();
+            if (selected.IndexOf(owner) != -1)
+            {
+                <option value="@owner.Id" selected>@owner.FirstName @owner.LastName</option>
+            }
+            else
+            {
+                <option value="@owner.Id">@owner.FirstName @owner.LastName</option>
+            }
+
+        }
+    </select>
+            <div class="form-group" name="file">
+                <div>
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+                <div>
+                    @Html.ActionLink("Cancel and return to List", "Cars", new { @class = "btn btn-default" })
+                </div>
+            </div>
+}

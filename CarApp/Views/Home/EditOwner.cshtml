@@ -1,0 +1,52 @@
+﻿@using CarApp.Models
+@using Model
+@using System.Collections.Generic;
+@using System.Linq;
+@model OwnerEditViewModel
+
+@{
+    ViewBag.Title = "Create/Edit";
+}
+
+@using (Html.BeginForm("EditOwner", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <h2>Owner</h2>
+
+    @Html.HiddenFor(owner => Model.Owner.Id)
+
+    @Html.LabelFor(owner => Model.Owner.FirstName)
+    @Html.ValidationMessageFor(owner => Model.Owner.FirstName)
+    @Html.EditorFor(owner => Model.Owner.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+
+    @Html.LabelFor(owner => Model.Owner.LastName)
+    @Html.ValidationMessageFor(owner => Model.Owner.LastName)
+    @Html.EditorFor(owner => Model.Owner.LastName, new { htmlAttributes = new { @class = "form-control" } })
+
+    @Html.LabelFor(owner => Model.Owner.DrivingExperience)
+    @Html.ValidationMessageFor(owner => Model.Owner.DrivingExperience)
+    @Html.EditorFor(owner => Model.Owner.DrivingExperience, new { htmlAttributes = new { @class = "form-control" } })
+
+    <select multiple class="chosen-select" name="carsSelect" data-placeholder="Cars...">
+        @foreach (var car in Model.Cars)
+        {
+            var selected = Model.Owner.Cars.ToList();
+            if (selected.IndexOf(car) != -1)
+            {
+                <option value="@car.Id" selected>@car.Model @car.Brand</option>
+            }
+            else
+            {
+                <option value="@car.Id">@car.Model @car.Brand</option>
+            }
+
+        }
+    </select>
+    <div class="form-group" name="file">
+        <div>
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+        <div>
+            @Html.ActionLink("Cancel and return to List", "Owners", new { @class = "btn btn-default" })
+        </div>
+    </div>
+}
